@@ -8,6 +8,7 @@ Run with: python3 demo_minimal.py
 import asyncio
 import sys
 from datetime import datetime
+import ssl
 
 try:
     import aiohttp
@@ -35,7 +36,13 @@ class TelegramNotifierMinimal:
     async def send_message(self, message: str) -> bool:
         """Send message to Telegram"""
         try:
-            async with aiohttp.ClientSession() as session:
+            # Create SSL context that doesn't verify certificates (for demo purposes)
+            ssl_context = ssl.create_default_context()
+            ssl_context.check_hostname = False
+            ssl_context.verify_mode = ssl.CERT_NONE
+            
+            connector = aiohttp.TCPConnector(ssl=ssl_context)
+            async with aiohttp.ClientSession(connector=connector) as session:
                 url = f"{self.base_url}/sendMessage"
                 payload = {
                     "chat_id": self.chat_id,
@@ -43,7 +50,12 @@ class TelegramNotifierMinimal:
                     "parse_mode": "HTML"
                 }
                 async with session.post(url, json=payload, timeout=aiohttp.ClientTimeout(total=10)) as response:
-                    return response.status == 200
+                    if response.status == 200:
+                        logger.debug(f"✓ Message sent successfully")
+                        return True
+                    else:
+                        logger.error(f"Failed with status {response.status}")
+                        return False
         except Exception as e:
             logger.error(f"Error sending Telegram message: {e}")
             return False
@@ -182,6 +194,10 @@ async def run_demo():
         print("✅ Telegram connected!\n")
     else:
         print("❌ Connection failed\n")
+        print("If you're behind a corporate firewall or proxy, you may need to:")
+        print("1. Use a VPN")
+        print("2. Configure proxy settings")
+        print("3. Check your internet connection\n")
         return
 
     # Demo 1: Opportunity
