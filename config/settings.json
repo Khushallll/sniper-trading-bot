@@ -25,6 +25,13 @@
     "max_open_positions": 3,
     "daily_loss_limit": 500
   },
+  "notifications": {
+    "telegram": {
+      "enabled": true,
+      "bot_token": "8698944043:AAFyQBqO-a1ooEq8KMZby63J7CVvLEz7Ja4",
+      "chat_id": "7650863580"
+    }
+  },
   "logging": {
     "level": "INFO",
     "file": "logs/bot.log"
