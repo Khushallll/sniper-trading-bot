@@ -1,0 +1,32 @@
+{
+  "exchange": {
+    "name": "binance",
+    "api_key": "YOUR_API_KEY",
+    "api_secret": "YOUR_API_SECRET",
+    "sandbox_mode": true
+  },
+  "trading": {
+    "trading_pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT"],
+    "timeframe": "1m",
+    "initial_capital": 10000,
+    "risk_per_trade": 0.02,
+    "max_position_size": 0.1
+  },
+  "detection": {
+    "min_volume_threshold": 1000000,
+    "price_change_threshold": 0.02,
+    "rsi_oversold": 30,
+    "rsi_overbought": 70,
+    "macd_signal_threshold": 0.0001
+  },
+  "risk_management": {
+    "stop_loss_percent": 2,
+    "take_profit_percent": 5,
+    "max_open_positions": 3,
+    "daily_loss_limit": 500
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/bot.log"
+  }
+}
